@@ -83,8 +83,8 @@ class BookManagerTest {
     @Test
     public void testAlphabeticalOrderAfterAddAndRemove() {
         List<Book> books = new ArrayList<>();
-        books.add(new Book("Book1"));
         books.add(new Book("Book2"));
+        books.add(new Book("Book1"));
         books.add(new Book("Book3"));
 
         books.sort(new Comparator<Book>() {
@@ -111,7 +111,7 @@ class BookManagerTest {
 
         assertEquals(2, books.size());
         assertEquals("Book1", books.get(0).getTitle());
-        assertEquals("Book3", books.get(1).getTitle());
+        assertEquals("Book3", books.get(2).getTitle());
 
 
         for (Book b : books) {
