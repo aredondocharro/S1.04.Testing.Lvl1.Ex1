@@ -1,10 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookManagerTest {
@@ -16,7 +16,7 @@ class BookManagerTest {
     }
 
     @Test
-    void initializeLibraryShouldNotReturnNull() {
+    void initializeLibraryShouldNotReturnNull(){
 
         Library library = BookManager.initializeLibrary();
 
@@ -24,14 +24,14 @@ class BookManagerTest {
     }
 
     @Test
-    void initializeLibrarySizeExpected() {
+    void initializeLibrarySizeExpected(){
         Library library = BookManager.initializeLibrary();
 
         assertEquals(5, library.getBooks().size(), "List should be size 5");
     }
 
     @Test
-    void testBookExistsInLibrary() {
+    void testBookExistsInLibrary(){
         Library library = BookManager.initializeLibrary();
 
         assertTrue(library.lookIfBookExist("The Little Prince"),
@@ -42,7 +42,7 @@ class BookManagerTest {
     }
 
     @Test
-    void testNoDuplicateBooks() {
+    void testNoDuplicateBooks(){
         Library library = new Library();
         Book book = new Book("The Little Prince");
 
@@ -54,7 +54,7 @@ class BookManagerTest {
 
 
     @Test
-    public void testAddBookAtSpecificPosition() {
+    public void testAddBookAtSpecificPosition(){
         library.addBook(new Book("BookTestC"));
         library.addBook(new Book("BookTestA"));
         library.addBookAtIndex(new Book("BookTestB"), 1);
@@ -69,8 +69,30 @@ class BookManagerTest {
         assertEquals("BookTestA", bookList.get(2).getTitle());
     }
 
+
     @Test
-    public void testRemoveBookByTitle() {
+    public void testAddBookAtSpecificPositionThrowsException() {
+        library.addBook(new Book("BookTestC"));
+        library.addBook(new Book("BookTestA"));
+
+        Executable executable = new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                library.addBookAtIndex(new Book("BookTestB"), 10);
+            }
+        };
+
+        Exception exception = assertThrows(BookIndexOutOfLimits.class, executable);
+
+        String expectedMessage = "That book index is out of limits";
+        assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+
+
+
+    @Test
+    public void testRemoveBookByTitle(){
         library.addBook(new Book("1984"));
         library.addBook(new Book("One Hundred Years of Solitude"));
         library.removeBookByTitle("1984");
@@ -111,7 +133,7 @@ class BookManagerTest {
 
         assertEquals(2, books.size());
         assertEquals("Book1", books.get(0).getTitle());
-        assertEquals("Book3", books.get(2).getTitle());
+        assertEquals("Book3", books.get(1).getTitle());
 
 
         for (Book b : books) {

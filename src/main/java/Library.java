@@ -12,18 +12,16 @@ class Library {
     public void addBook(Book book) {
         if (!books.contains(book)) {
             books.add(book);
-        } else {
-            System.out.println(book + " already exist.");
         }
-
     }
 
+
     public void addBookAtIndex(Book book, int index) {
-        if (index >= 0 && index <= books.size()) {
-            books.add(index, book);
-        } else {
-            System.out.println("Index out of range.");
+        if (index < 0 || index > books.size()) {
+            throw new BookIndexOutOfLimits("That book index is out of limits");
         }
+        books.add(index, book);
+
     }
 
     public List<Book> getBooks() {
@@ -31,11 +29,11 @@ class Library {
     }
 
     public Book getBookAt(int index) {
-        if (index >= 0 && index < books.size()) {
-            return books.get(index);
+        if (index < 0 || index >= books.size()) {
+            throw new BookIndexOutOfLimits("That book index is out of limits");
         }
-        System.out.println("Index out of range.");
-        return null;
+        return books.get(index);
+
     }
 
     public boolean lookIfBookExist(String title) {
@@ -53,11 +51,8 @@ class Library {
             Book book = iterator.next();
             if (book.getTitle().equalsIgnoreCase(title)) {
                 iterator.remove();
-                System.out.println("Book " + title + " removed successfully.");
                 return;
             }
         }
-        System.out.println("Book " + title + " not found in the library.");
     }
-
 }
